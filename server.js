@@ -42,16 +42,18 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/upload', function(req, res) {
-  let sampleFile;
-  let uploadPath;
-
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded.');
+    return res.status(400).send('No file was uploaded.');
   }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  sampleFile = req.files.sampleFile;
-  uploadPath = __dirname + '/uploads/' + sampleFile.name;
+  // Get the name of the first uploaded file
+  let sampleFileKey = Object.keys(req.files)[0];
+
+  // Retrieve the uploaded file
+  let sampleFile = req.files[sampleFileKey];
+
+  // Use the name of the uploaded file
+  let uploadPath = __dirname + '/uploads/' + sampleFile.name;
 
   // Use the mv() method to place the file somewhere on your server
   sampleFile.mv(uploadPath, function(err) {
