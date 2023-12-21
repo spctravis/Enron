@@ -31,6 +31,7 @@ $csvData = $uniqueEmails.Keys | ForEach-Object {
         'FirstName' = $user.FirstName
         'LastName' = $user.LastName
         'UserPrincipalName' = $email
+        'DisplayName' = "$($user.FirstName) $($user.LastName)"
     }
 }
 $csvData | Export-Csv -Path './users.csv' -NoTypeInformation

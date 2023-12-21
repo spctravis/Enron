@@ -1,11 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const { Pool } = require('pg');
+const path = require('path');
 
 const app = express();
 
 // Middleware to handle form data
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 // Connect to your PostgreSQL database
 const pool = new Pool({
@@ -14,6 +17,10 @@ const pool = new Pool({
   database: 'your_database',
   password: 'your_password',
   port: 5432,
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'defaultwebpage.html'));
 });
 
 app.post('/login', (req, res) => {
@@ -31,6 +38,27 @@ app.post('/login', (req, res) => {
     } else {
       res.send('Invalid username or password');
     }
+  });
+});
+
+app.post('/upload', function(req, res) {
+  let sampleFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  sampleFile = req.files.sampleFile;
+  uploadPath = __dirname + '/uploads/' + sampleFile.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send(`<html><body>File uploaded! Filename: ${sampleFile.name}</body></html>`);
   });
 });
 
