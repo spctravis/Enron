@@ -64,6 +64,11 @@ app.post('/upload', function(req, res) {
   });
 });
 
+app.get('/xss', (req, res) => {
+  const userContent = req.query.content;
+  res.send(`<html><body>${userContent}</body></html>`);
+});
+
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });

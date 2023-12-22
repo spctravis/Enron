@@ -5,7 +5,7 @@
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background: url('./figher-jet.jpg') no-repeat center center fixed; 
+                background: url('./fighter-jet.jpg') no-repeat center center fixed; 
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
@@ -21,6 +21,10 @@
             }
             .login-form, .upload-form {
                 margin-top: 20px;
+            }
+            .center-text {
+                text-align: center;
+                display: block;
             }
             /* Add more styles here as needed */
         </style>
@@ -49,6 +53,11 @@
                 <input type="submit" value="Upload">
             </form>
         </div>
+        <form action="/xss" method="get">
+            <label for="content">If you would like to be contacted please leave a message:</label><br>
+            <input type="text" id="content" name="content"><br>
+            <input type="submit" value="Submit">
+        </form>
     </div>
 </body>
 </html>
